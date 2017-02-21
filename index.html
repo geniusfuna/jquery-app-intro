@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>Welcome to Slider</title>
+    <style type="text/css">
+    *, *:before, *:after {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    body{
+        -webkit-font-smoothing: antialiased;
+        font-smoothing: antialiased;
+        -webkit-text-size-adjust: none;
+        -moz-text-size-adjust: none;
+        text-size-adjust: none;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        color: #000;
+        word-wrap: break-word;
+        font-size: 14px;
+        font-family: -apple-system;
+        font-family: "-apple-system", "Helvetica Neue", "Roboto", "Segoe UI", sans-serif;
+        line-height: 20px;
+        text-rendering: optimizeLegibility;
+        -webkit-backface-visibility: hidden;
+        -webkit-user-drag: none;
+        -ms-content-zooming: none;
+}
+    .container{display:block;width:100%;height:100%;background:#eee;position:absolute;}
+    .slider{position:relative;width:100%;height:100%;overflow:hidden;}
+    .slider .slider-slides{position:relative;height:100%;}
+    .slider .slider-slides .slider-slide{position:relative;display:block;float:left;width:100%;height:100%;text-align:center;}
+    .slider-pager {
+        position: absolute;
+        bottom: 20px;
+        z-index: 1;
+        width: 100%;
+        height: 15px;
+        text-align: center;
+    }
+    .slider .slider-pager .slider-pager-page {
+        display: inline-block;
+        margin: 0px 3px;
+        width: 15px;
+        height:15px;
+        text-decoration: none;
+        opacity: 0.3;
+    }
+    .slider .slider-pager .slider-pager-page.active {
+        -webkit-transition: opacity 0.4s ease-in;
+        transition: opacity 0.4s ease-in;
+        opacity: 1;
+    }
+    .slider .slider-pager i{
+        display: inline-block;
+        width:80%;
+        height:80%;
+        border-radius: 50%;
+        background-color:#000;
+    }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="slider">
+        <div class="slider-slides">
+            <div class="slider-slide">
+                <h3>Thank you for choosing the Awesome App!</h3>
+                <div id="logo">
+                  <img src="http://code.ionicframework.com/assets/img/app_icon.png">
+                </div>
+                <p>We've worked super hard to make you happy.</p>
+                <p>But if you are angry, too bad.</p>
+            </div>
+            <div class="slider-slide active">
+                <h3>Using Awesome</h3>
+                <div id="list">
+                  <h5>Just three steps:</h5>
+                  <ol>
+                    <li>Be awesome</li>
+                    <li>Stay awesome</li>
+                    <li>There is no step 3</li>
+                  </ol>
+                </div>
+            </div>
+            <div class="slider-slide">
+                <h3>Any questions?</h3>
+                <p>Too bad!</p>
+            </div>
+        </div>
+        <div class="slider-pager">
+            <span class="slider-pager-page active"><i class="icon ion-record"></i></span>
+            <span class="slider-pager-page"><i class="icon ion-record"></i></span>
+
+        </div>
+    </div>
+</div>
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery.touchSwipe.min.js"></script>
+<script>
+$(function(){
+    Slider.init();
+});
+
+var Slider = {};
+var targetIndex;
+Slider = {
+    init: function(){
+        // Slides
+        $(".slider .slider-slides").css("width", Slider.total*Slider.width);
+        $(".slider .slider-slides .slider-slide").width(Slider.width);
+        $(".slider .slider-slides .slider-slide").each(function(index){
+            $(this).css({
+                "left": "-" + Slider.width*(index) + "px",
+                "transform": "translate(" + Slider.width*index + "px, 0px) translateZ(0px)"
+            }).attr("dist", Slider.width*index);
+        });
+
+        Slider.pager();
+        
+        // document.addEventListener('touchstart', function(e) {e.preventDefault();}, false);
+        // document.addEventListener('touchmove', function(e) {console.log($(".slider-slides").swipe)}, false);
+        // document.addEventListener('touchend', function(e) {touchEnd(e);}, false);
+        $(".slider-slides").swipe({
+            //Single swipe handler for left swipes
+            // swipe:function(event, direction, distance, duration, fingerCount) {
+            swipeStatus:function(event, phase, direction, distance, duration, fingers, fingerData, currentDirection){
+                // $(this).text("You swiped " + direction + " times "); 
+                index = $(".slider-slides .active").index();
+                if(distance > Slider.width){
+                    distance = Slider.width;
+                }
+                if(direction == "left"){
+                    console.log("SwipeLeft: " + index);
+                    if(index == Slider.total - 1){
+                        targetIndex = Slider.total - 1;
+                        return
+                    }else{
+                        targetIndex = index+1;
+                    }
+                    // Slider.touchMove(index, "-" + distance, "200");
+                    // Slider.touchMove(targetIndex, "-" + distance, "200");
+                }else if(direction == "right"){
+                    console.log("SwipeRight: " + index)
+                    if(index < 1){
+                        targetIndex = 0;
+                        return
+                    }else{
+                        targetIndex = index-1;
+                    }
+                    // Slider.touchMove(index, distance, "200");
+                    // Slider.touchMove(targetIndex, distance, "200");
+                }else{
+                    event.preventDefault()
+                }
+                if(distance > Slider.width/3 && (targetIndex < Slider.total-1 || targetIndex > 0)){
+                    Slider.switchPage(parseInt(targetIndex));
+                    return
+                }else{
+                    Slider.touchMove(index, 0, 0);
+                    Slider.touchMove(targetIndex, "-" + Slider.width, 0);
+                }
+                console.log(targetIndex + ", Direction:" + direction + ", Distance:" + distance);
+                // Slider.touchMove(index, distance, 0, currentDirection, targetIndex);
+            },
+            //Default is 75px, set to 0 for demo so any distance triggers swipe
+            // threshold:0
+        });
+    },
+    touchMove: function(index, dist, speed, direction){
+        var slide = $(".slider-slide")[index];
+        var style = slide && slide.style;
+
+        if (!style) return;
+
+        var newDist;
+        // $(".slider-slide").each(function(i){
+            style.webkitTransitionDuration =
+            style.MozTransitionDuration =
+            style.msTransitionDuration =
+            style.OTransitionDuration =
+            style.transitionDuration = speed + 'ms';
+            // oldDist = parseInt($(slide).attr("dist"));
+            // if(direction == "left"){
+            //     newDist = oldDist + dist;
+            //     style.webkitTransform = 'translate(' + newDist + 'px,0)' + 'translateZ(0)';
+            // }else if(direction == "right"){
+            //     newDist = oldDist-dist;
+                style.webkitTransform = 'translate(' + newDist + 'px,0)' + 'translateZ(0)';
+            // }
+            // style.webkitTransform = 'translate(' + dist + 'px,0)' + 'translateZ(0)';
+            style.msTransform =
+            style.MozTransform =
+            style.OTransform = 'translateX(' + dist + 'px)';
+            $(slide).attr("dist", newDist);
+        // });
+
+        
+    },
+    switchPage: function(num){
+        var elem = $(".slider .slider-slides .slider-slide").eq(num);
+        $(".slider .slider-slides .slider-slide").each(function(index){
+            $(".slider .slider-slides .slider-slide").removeClass("active");
+            $(this).css({
+                "transition-duration": "200ms",
+                "transform": "translate(" + Slider.width*(index-num) + "px, 0px) translateZ(0px)"
+            }).attr("dist", Slider.width*(index-num));
+        });
+        $(".slider .slider-slides .slider-slide").eq(num).addClass('active');
+        Slider.pager(num);
+    },
+    pager: function(num){
+        // Add Pager
+        var pager = $(".slider-pager");
+        if(num == undefined){
+            // Initial;
+            $(pager).empty();
+            for(var i=0;i<Slider.total;i++){
+                var span = $('<span class="slider-pager-page"><i></i></span>');
+                span.attr('onclick', "Slider.switchPage(" + i + ");");
+                $(pager).append(span);
+            }
+            if($(".slider-slides .active").length == 0){
+                $(".slider-slides .slider-slide").eq(0).addClass('active');
+                $(pager).children().first().addClass('active');
+            }else{
+                num = $(".slider-slides .active").index();
+                Slider.switchPage(num);
+                $(pager).children().eq(num).addClass('active');
+            }
+        }else{
+            // console.log(num);
+            $(pager).find('.active').removeClass('active');
+            $(pager).children().eq(num).addClass('active');
+        }
+    },
+    width:screen.width,
+    height:screen.height,
+    total:$(".slider-slides").children().length
+}
+
+function translate(index, dist, speed) {
+
+      var slide = slides[index];
+      var style = slide && slide.style;
+
+      if (!style) return;
+
+      style.webkitTransitionDuration =
+      style.MozTransitionDuration =
+      style.msTransitionDuration =
+      style.OTransitionDuration =
+      style.transitionDuration = speed + 'ms';
+
+      style.webkitTransform = 'translate(' + dist + 'px,0)' + 'translateZ(0)';
+      style.msTransform =
+      style.MozTransform =
+      style.OTransform = 'translateX(' + dist + 'px)';
+
+    }
+</script>
+</body>
+</html>

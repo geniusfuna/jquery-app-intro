@@ -1,0 +1,1 @@
+browser-sync start --server --files "**/*.html,**/*.css,**/*.js" --port 8000 --no-notify
