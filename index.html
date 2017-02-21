@@ -101,11 +101,7 @@
                 <p>Too bad!</p>
             </div>
         </div>
-        <div class="slider-pager">
-            <span class="slider-pager-page active"><i class="icon ion-record"></i></span>
-            <span class="slider-pager-page"><i class="icon ion-record"></i></span>
-
-        </div>
+        <div class="slider-pager"></div>
     </div>
 </div>
 <script src="js/jquery.min.js"></script>
@@ -126,19 +122,13 @@ Slider = {
             $(this).css({
                 "left": "-" + Slider.width*(index) + "px",
                 "transform": "translate(" + Slider.width*index + "px, 0px) translateZ(0px)"
-            }).attr("dist", Slider.width*index);
+            });
         });
 
         Slider.pager();
-        
-        // document.addEventListener('touchstart', function(e) {e.preventDefault();}, false);
-        // document.addEventListener('touchmove', function(e) {console.log($(".slider-slides").swipe)}, false);
-        // document.addEventListener('touchend', function(e) {touchEnd(e);}, false);
         $(".slider-slides").swipe({
-            //Single swipe handler for left swipes
             // swipe:function(event, direction, distance, duration, fingerCount) {
             swipeStatus:function(event, phase, direction, distance, duration, fingers, fingerData, currentDirection){
-                // $(this).text("You swiped " + direction + " times "); 
                 index = $(".slider-slides .active").index();
                 if(distance > Slider.width){
                     distance = Slider.width;
@@ -147,37 +137,42 @@ Slider = {
                     console.log("SwipeLeft: " + index);
                     if(index == Slider.total - 1){
                         targetIndex = Slider.total - 1;
-                        return
+                        // return
                     }else{
                         targetIndex = index+1;
                     }
-                    // Slider.touchMove(index, "-" + distance, "200");
-                    // Slider.touchMove(targetIndex, "-" + distance, "200");
                 }else if(direction == "right"){
-                    console.log("SwipeRight: " + index)
+                    console.log("SwipeRight: " + index);
                     if(index < 1){
                         targetIndex = 0;
-                        return
+                        // return
                     }else{
                         targetIndex = index-1;
                     }
-                    // Slider.touchMove(index, distance, "200");
-                    // Slider.touchMove(targetIndex, distance, "200");
                 }else{
-                    event.preventDefault()
+                    //prevent SwipeUp & SwipeDown
+                    event.preventDefault();
                 }
-                if(distance > Slider.width/3 && (targetIndex < Slider.total-1 || targetIndex > 0)){
-                    Slider.switchPage(parseInt(targetIndex));
-                    return
-                }else{
-                    Slider.touchMove(index, 0, 0);
-                    Slider.touchMove(targetIndex, "-" + Slider.width, 0);
+                console.log(phase);
+                if(phase == "end"){
+                    if(distance > Slider.width/3 && (targetIndex < Slider.total-1 || targetIndex > 0)){
+                        console.log("====>"+targetIndex);
+                        Slider.switchPage(parseInt(targetIndex));
+                        return
+                    }else{
+                        Slider.switchPage(parseInt(index));
+                    }
+                }else if(phase == "move"){
+                    console.log(targetIndex + ", Direction:" + direction + ", Distance:" + distance);
+                    Slider.touchMove(index, distance, 0, currentDirection);
+                    if(targetIndex != 0){
+                        Slider.touchMove(targetIndex, distance-Slider.width, 0, currentDirection);
+                    }
                 }
-                console.log(targetIndex + ", Direction:" + direction + ", Distance:" + distance);
-                // Slider.touchMove(index, distance, 0, currentDirection, targetIndex);
+
             },
             //Default is 75px, set to 0 for demo so any distance triggers swipe
-            // threshold:0
+            threshold:0
         });
     },
     touchMove: function(index, dist, speed, direction){
@@ -194,21 +189,19 @@ Slider = {
             style.OTransitionDuration =
             style.transitionDuration = speed + 'ms';
             // oldDist = parseInt($(slide).attr("dist"));
-            // if(direction == "left"){
+            if(direction == "left"){
             //     newDist = oldDist + dist;
-            //     style.webkitTransform = 'translate(' + newDist + 'px,0)' + 'translateZ(0)';
-            // }else if(direction == "right"){
+                style.webkitTransform = 'translate(' + (-dist) + 'px,0)' + 'translateZ(0)';
+            }else if(direction == "right"){
             //     newDist = oldDist-dist;
-                style.webkitTransform = 'translate(' + newDist + 'px,0)' + 'translateZ(0)';
-            // }
+                style.webkitTransform = 'translate(' + dist + 'px,0)' + 'translateZ(0)';
+            }
             // style.webkitTransform = 'translate(' + dist + 'px,0)' + 'translateZ(0)';
             style.msTransform =
             style.MozTransform =
             style.OTransform = 'translateX(' + dist + 'px)';
             $(slide).attr("dist", newDist);
         // });
-
-        
     },
     switchPage: function(num){
         var elem = $(".slider .slider-slides .slider-slide").eq(num);
@@ -217,7 +210,7 @@ Slider = {
             $(this).css({
                 "transition-duration": "200ms",
                 "transform": "translate(" + Slider.width*(index-num) + "px, 0px) translateZ(0px)"
-            }).attr("dist", Slider.width*(index-num));
+            });
         });
         $(".slider .slider-slides .slider-slide").eq(num).addClass('active');
         Slider.pager(num);
@@ -251,26 +244,6 @@ Slider = {
     height:screen.height,
     total:$(".slider-slides").children().length
 }
-
-function translate(index, dist, speed) {
-
-      var slide = slides[index];
-      var style = slide && slide.style;
-
-      if (!style) return;
-
-      style.webkitTransitionDuration =
-      style.MozTransitionDuration =
-      style.msTransitionDuration =
-      style.OTransitionDuration =
-      style.transitionDuration = speed + 'ms';
-
-      style.webkitTransform = 'translate(' + dist + 'px,0)' + 'translateZ(0)';
-      style.msTransform =
-      style.MozTransform =
-      style.OTransform = 'translateX(' + dist + 'px)';
-
-    }
 </script>
 </body>
 </html>
