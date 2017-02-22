@@ -2,13 +2,9 @@
 <html>
 <head>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <meta name="author" content="Funa">
     <title>Welcome to Slider</title>
     <style type="text/css">
-    *, *:before, *:after {
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-    }
     body{
         -webkit-font-smoothing: antialiased;
         font-smoothing: antialiased;
@@ -131,7 +127,6 @@ Slider = {
 
         Slider.pager();
         $(".slider-slides").swipe({
-            // swipe:function(event, direction, distance, duration, fingerCount) {
             swipeStatus:function(event, phase, direction, distance, duration, fingers, fingerData, currentDirection){
                 index = $(".slider-slides .active").index();
                 if(distance > Slider.width){
@@ -157,7 +152,7 @@ Slider = {
                     }
                 }else{
                     //prevent SwipeUp & SwipeDown
-                    event.preventDefault();
+                    return
                 }
                 console.log(phase);
                 if(phase == "end"){
@@ -197,27 +192,20 @@ Slider = {
 
         if (!style) return;
 
-        var newDist;
-        // $(".slider-slide").each(function(i){
-            style.webkitTransitionDuration =
-            style.MozTransitionDuration =
-            style.msTransitionDuration =
-            style.OTransitionDuration =
-            style.transitionDuration = speed + 'ms';
-            // oldDist = parseInt($(slide).attr("dist"));
-            if(direction == "left"){
-            //     newDist = oldDist + dist;
-                style.webkitTransform = 'translate(' + (-dist) + 'px,0)' + 'translateZ(0)';
-            }else if(direction == "right"){
-            //     newDist = oldDist-dist;
-                style.webkitTransform = 'translate(' + dist + 'px,0)' + 'translateZ(0)';
-            }
-            // style.webkitTransform = 'translate(' + dist + 'px,0)' + 'translateZ(0)';
-            style.msTransform =
-            style.MozTransform =
-            style.OTransform = 'translateX(' + dist + 'px)';
-            $(slide).attr("dist", newDist);
-        // });
+        style.webkitTransitionDuration =
+        style.MozTransitionDuration =
+        style.msTransitionDuration =
+        style.OTransitionDuration =
+        style.transitionDuration = speed + 'ms';
+        oldDist = parseInt($(slide).attr("dist"));
+        if(direction == "left"){
+            style.webkitTransform = 'translate(' + (-dist) + 'px,0)' + 'translateZ(0)';
+        }else if(direction == "right"){
+            style.webkitTransform = 'translate(' + dist + 'px,0)' + 'translateZ(0)';
+        }
+        style.msTransform =
+        style.MozTransform =
+        style.OTransform = 'translateX(' + dist + 'px)';
     },
     switchPage: function(num){
         var elem = $(".slider .slider-slides .slider-slide").eq(num);
@@ -232,7 +220,7 @@ Slider = {
         Slider.pager(num);
     },
     pager: function(num){
-        // Add Pager
+        // Add Page control
         var pager = $(".slider-pager");
         if(num == undefined){
             // Initial;
