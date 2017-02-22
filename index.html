@@ -100,6 +100,10 @@
                 <h3>Any questions?</h3>
                 <p>Too bad!</p>
             </div>
+            <div class="slider-slide">
+                <h3>Too much questions!</h3>
+                <p>OMG</p>
+            </div>
         </div>
         <div class="slider-pager"></div>
     </div>
@@ -137,8 +141,10 @@ Slider = {
                     console.log("SwipeLeft: " + index);
                     if(index == Slider.total - 1){
                         targetIndex = Slider.total - 1;
+                        console.log('==Total:'+targetIndex);
                         // return
                     }else{
+                        console.log("Left index:" + index + ";")
                         targetIndex = index+1;
                     }
                 }else if(direction == "right"){
@@ -163,10 +169,20 @@ Slider = {
                         Slider.switchPage(parseInt(index));
                     }
                 }else if(phase == "move"){
-                    console.log(targetIndex + ", Direction:" + direction + ", Distance:" + distance);
-                    Slider.touchMove(index, distance, 0, currentDirection);
+                    console.log("index:"+ index +", targetIndex:" +targetIndex + ", Direction:" + direction + ", Distance:" + distance);
+                    if(targetIndex != Slider.total-1){
+                        // 
+                        Slider.touchMove(index, distance, 0, currentDirection);
+                    }
                     if(targetIndex != 0){
-                        Slider.touchMove(targetIndex, distance-Slider.width, 0, currentDirection);
+                        // 非最左
+                        if(targetIndex == Slider.total-1){
+                            console.log("#Last right");
+                            Slider.touchMove(index, distance, 0, currentDirection);
+                        }else{
+                            console.log("#180");
+                            Slider.touchMove(targetIndex, distance-Slider.width, 0, currentDirection);
+                        }
                     }
                 }
 
