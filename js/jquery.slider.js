@@ -1,4 +1,4 @@
-var Slider = {},targetIndex,slideItems,slideGroup,pager,speed;
+var Slider = {},targetIndex,slideItems,slideGroup,pager,sliderspeed;
 // Element config;
 window.addEventListener ("orientationchange", function(){location.reload()}, false );
 
@@ -7,7 +7,7 @@ Slider = {
         slideItems = conf.slideItems ? conf.slideItems : null;
         slideGroup = conf.slideGroup ? conf.slideGroup : null;
         pager = conf.pager ? conf.pager : null;
-        speed = conf.speed ? conf.speed : 300;
+        sliderspeed = conf.speed ? conf.speed : 300;
 
         if(slideItems == null || slideGroup == null || pager == null){
             console.warn("Please check the config first");
@@ -62,14 +62,14 @@ Slider = {
                 }else if(phase == "move"){
                     // console.log("index:"+ index +", targetIndex:" +targetIndex + ", Direction:" + direction + ", Distance:" + distance);
                     if(targetIndex != Slider.total-1){
-                        Slider.touchMove(index, distance, speed, currentDirection);
+                        Slider.touchMove(index, distance, sliderspeed, currentDirection);
                     }
                     if(targetIndex != 0){
                         if(targetIndex == Slider.total-1){
                             // console.log("#Right end");
                             Slider.touchMove(index, distance, 0, currentDirection);
                         }else{
-                            Slider.touchMove(targetIndex, distance-Slider.width, speed, currentDirection);
+                            Slider.touchMove(targetIndex, distance-Slider.width, sliderspeed, currentDirection);
                         }
                     }
                 }
@@ -105,7 +105,7 @@ Slider = {
         slideItems.each(function(index){
             slideItems.removeClass("active");
             $(this).css({
-                "transition-duration": speed + "ms",
+                "transition-duration": sliderspeed + "ms",
                 "transform": "translate(" + Slider.width*(index-num) + "px, 0px) translateZ(0px)"
             });
         });
