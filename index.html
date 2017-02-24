@@ -4,79 +4,16 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <meta name="author" content="Funa">
     <title>Welcome to Slider</title>
-    <style type="text/css">
-    body{
-        -webkit-font-smoothing: antialiased;
-        font-smoothing: antialiased;
-        -webkit-text-size-adjust: none;
-        -moz-text-size-adjust: none;
-        text-size-adjust: none;
-        -webkit-tap-highlight-color: transparent;
-        -webkit-tap-highlight-color: transparent;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        overflow: hidden;
-        margin: 0;
-        padding: 0;
-        color: #000;
-        word-wrap: break-word;
-        font-size: 14px;
-        font-family: -apple-system;
-        font-family: "-apple-system", "Helvetica Neue", "Roboto", "Segoe UI", sans-serif;
-        line-height: 20px;
-        text-rendering: optimizeLegibility;
-        -webkit-backface-visibility: hidden;
-        -webkit-user-drag: none;
-        -ms-content-zooming: none;
-}
-    /*.container{display:block;width:100%;height:100%;background:#eee;position:absolute;}*/
-    .slider{overflow:hidden;display:block;width:100%;height:100%;background:#eee;position:absolute;}
-    .slider .slider-slides{position:relative;height:100%;}
-    .slider .slider-slides .slider-slide{position:relative;display:block;float:left;width:100%;height:100%;text-align:center;}
-    .slider-pager {
-        position: absolute;
-        bottom: 20px;
-        z-index: 1;
-        width: 100%;
-        height: 15px;
-        text-align: center;
-    }
-    .slider .slider-pager .slider-pager-page {
-        display: inline-block;
-        margin: 0px 3px;
-        width: 15px;
-        height:15px;
-        text-decoration: none;
-        opacity: 0.3;
-    }
-    .slider .slider-pager .slider-pager-page.active {
-        -webkit-transition: opacity 0.4s ease-in;
-        transition: opacity 0.4s ease-in;
-        opacity: 1;
-    }
-    .slider .slider-pager i{
-        display: inline-block;
-        width:80%;
-        height:80%;
-        border-radius: 50%;
-        background-color:#000;
-    }
-    </style>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
 <div class="container">
-    <div class="slider">
-        <div class="slider-slides">
+    <div class="slider" slider="main">
+        <div class="slider-slides" slider="slideGroup">
             <div class="slider-slide">
                 <h3>Thank you for choosing the Awesome App!</h3>
                 <div id="logo">
-                  <img src="http://code.ionicframework.com/assets/img/app_icon.png">
+                  <img src="https://www.apple.com/global/elements/itunesmodule/facebook_appstore_icon.png">
                 </div>
                 <p>We've worked super hard to make you happy.</p>
                 <p>But if you are angry, too bad.</p>
@@ -97,19 +34,20 @@
                 <p>Too bad!</p>
             </div>
         </div>
-        <div class="slider-pager"></div>
+        <div class="slider-pager" slider="pager"></div>
     </div>
 </div>
-<script src="js/jquery.min.js"></script>
-<script src="js/jquery.touchSwipe.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+<script src="http://labs.rampinteractive.co.uk/touchSwipe/jquery.touchSwipe.min.js"></script>
 <script src="js/jquery.slider.js"></script>
 <script>
 $(function(){
-    Slider.init({
-        "slideItems": $(".slider .slider-slides .slider-slide"),
-        "slideGroup": $(".slider .slider-slides"),
-        "pager":$(".slider .slider-pager"),
-        "speed":100
+    // .slider > .slider-slides > .slider-slide
+    $(".slider").Slider({
+        "slideGroup": ".slider-slides",
+        "slideItems": ".slider-slide",
+        "pager": ".slider-pager",
+        "speed": 300 //OPTIONAL
     });
 });
 </script>
