@@ -1,11 +1,26 @@
 //jquery plugin, need jquery.touchSwipe.js
 ;(function ($) {
     $.fn.Slider = function(conf){
-        var _this = $(this),Slider,targetIndex,slideItems,slideGroup,pager,sliderspeed;
+        var _this = $(this),Slider,targetIndex,slideItems,slideGroup,pager,sliderspeed,activeId;
         // Reload page to reset value when Oritentation Changes!
-        window.addEventListener ("orientationchange", function(){location.reload()}, false );
         Slider = {
+            resize: function(){
+                // Slides
+                Slider.width = (window.orientation != 0 ||window.orientation != 180 ||  window.orientation == undefined) ? window.innerWidth : window.innerHeight;
+                Slider.height = (window.orientation != 0 || window.orientation != 180 || window.orientation == undefined) ? window.innerHeight : window.innerWidth;
+                slideGroup.css("width", Slider.total*Slider.width);
+                slideItems.width(Slider.width);
+                slideItems.each(function(index){
+                    $(this).css({
+                        "left": "-" + Slider.width*(index) + "px",
+                        "transform": "translate(" + Slider.width*index + "px, 0px) translateZ(0px)"
+                    });
+                });
+                activeId = $(pager).find('.active').length > 0 ? $(pager).find('.active').index() : 0;
+                Slider.switchPage(activeId);
+            },
             init: function(){
+                window.addEventListener ("orientationchange", function(){Slider.resize()}, false );
                 //Configuration priority: conf >  attributes
                 conf.slideGroup = conf.slideGroup ? conf.slideGroup : '[slider="slideGroup"]';
                 conf.slideItems = conf.slideItems ? conf.slideItems : '[slider="slideGroup"] > div';
@@ -23,17 +38,9 @@
                 }
                 Slider.total = slideGroup.children().length;
 
-                // Slides
-                slideGroup.css("width", Slider.total*Slider.width);
-                slideItems.width(Slider.width);
-                slideItems.each(function(index){
-                    $(this).css({
-                        "left": "-" + Slider.width*(index) + "px",
-                        "transform": "translate(" + Slider.width*index + "px, 0px) translateZ(0px)"
-                    });
-                });
-
+                Slider.resize();
                 Slider.pager();
+
                 slideGroup.swipe({
                     swipeStatus:function(event, phase, direction, distance, duration, fingers, fingerData, currentDirection){
                         index = slideGroup.find(".active").index();

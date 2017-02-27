@@ -16,6 +16,8 @@ Add a simple intro tutorial to your app with jQuery & jquery.touchSwipe.min.js
         </div>
         <div class="slider-pager" slider="pager"></div>
     </div>
+</div>
+...
 ````
 
 ````javascript
