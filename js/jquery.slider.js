@@ -12,8 +12,10 @@
                 slideItems.width(Slider.width);
                 slideItems.each(function(index){
                     $(this).css({
-                        "left": "-" + Slider.width*(index) + "px",
-                        "transform": "translate(" + Slider.width*index + "px, 0px) translateZ(0px)"
+                        // "left": "-" + Slider.width*(index) + "px",
+                        "left": Slider.width*(index) + "px",
+                        // "transform": "translate(" + Slider.width*index + "px, 0px) translateZ(0px)"
+                        // "transform": "translate(" + Slider.width*index + "px, 0px) translateZ(0px)"
                     });
                 });
                 activeId = $(pager).find('.active').length > 0 ? $(pager).find('.active').index() : 0;
@@ -73,22 +75,25 @@
                                 return
                             }else{
                                 Slider.switchPage(parseInt(index));
+                                return
                             }
                         }else if(phase == "move"){
                             // console.log("index:"+ index +", targetIndex:" +targetIndex + ", Direction:" + direction + ", Distance:" + distance);
                             if(targetIndex != Slider.total-1){
-                                Slider.touchMove(index, distance, sliderspeed, currentDirection);
+                                Slider.touchMove(index, distance, sliderspeed, direction);
+                                // return
                             }
                             if(targetIndex != 0){
                                 if(targetIndex == Slider.total-1){
                                     // console.log("#Right end");
-                                    Slider.touchMove(index, distance, 0, currentDirection);
+                                    Slider.touchMove(index, distance, sliderspeed, direction);
+                                    // return
                                 }else{
-                                    Slider.touchMove(targetIndex, distance-Slider.width, sliderspeed, currentDirection);
+                                    Slider.touchMove(targetIndex, distance-Slider.width, sliderspeed, direction);
+                                    // return
                                 }
                             }
                         }
-
                     },
                     //Default is 75px, set to 0 for demo so any distance triggers swipe
                     threshold:0
@@ -119,8 +124,11 @@
                 slideItems.each(function(index){
                     slideItems.removeClass("active");
                     $(this).css({
-                        "transition-duration": sliderspeed + "ms",
+                        // "transition-duration": sliderspeed + "ms",
+                        // "transform": "translate(" + Slider.width*(num-index) + "px, 0px) translateZ(0px)"
+                        "left" : 0,
                         "transform": "translate(" + Slider.width*(index-num) + "px, 0px) translateZ(0px)"
+
                     });
                 });
                 slideItems.eq(num).addClass('active');

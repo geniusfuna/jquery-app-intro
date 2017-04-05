@@ -1,102 +1,96 @@
 body {
-    -webkit-font-smoothing: antialiased;
-    font-smoothing: antialiased;
-    -webkit-text-size-adjust: none;
-    -moz-text-size-adjust: none;
-    text-size-adjust: none;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    overflow: hidden;
-    margin: 0;
-    padding: 0;
-    color: #000;
-    word-wrap: break-word;
-    font-size: 14px;
-    font-family: -apple-system;
-    font-family: "-apple-system", "Helvetica Neue", "Roboto", "Segoe UI", sans-serif;
-    line-height: 20px;
-    text-rendering: optimizeLegibility;
-    -webkit-backface-visibility: hidden;
-    -webkit-user-drag: none;
-    -ms-content-zooming: none;
+  text-size-adjust: none;
+  user-select: none;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  color: #000;
+  word-wrap: break-word;
+  font-size: 14px;
+  font-family: "-apple-system", "Helvetica Neue", "Roboto", "Segoe UI", sans-serif;
+  line-height: 20px;
+  text-rendering: optimizeLegibility;
+  -webkit-backface-visibility: hidden;
+  -webkit-user-drag: none;
+  -ms-content-zooming: none;
 }
-
 [slider="main"] {
-    overflow: hidden;
-    display: block;
-    width: 100%;
-    height: 100%;
-    background: #eee;
-    position: absolute;
+  overflow: hidden;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  position: absolute;
 }
-
 [slider="slideGroup"] {
-    position: relative;
-    height: 100%;
+  position: relative;
+  height: 100%;
 }
-
 [slider="slideGroup"] > div {
-    position: relative;
-    display: block;
-    float: left;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  background: #fff;
 }
-
+[slider="slideGroup"] > div img {
+  max-width: 100%;
+}
+[slider="slideGroup"] > div .slide_blue {
+  background: #90a5d1;
+}
+[slider="slideGroup"] > div .slide_blue.cloud {
+  height: 6rem;
+}
+[slider="slideGroup"] > div .slide_pink {
+  background: #f7cbca;
+  height: 6rem;
+}
+[slider="slideGroup"] > div .avatar {
+  max-width: 30%;
+  position: relative;
+  bottom: -2rem;
+  z-index: 999;
+}
+[slider="slideGroup"] > div .bottom {
+  position: absolute;
+  bottom: 1rem;
+  left: 0;
+}
+[slider="slideGroup"] > div .center {
+  text-align: center;
+}
 [slider="pager"] {
-    position: absolute;
-    bottom: 20px;
-    z-index: 1;
-    width: 100%;
-    height: 15px;
-    text-align: center;
+  position: absolute;
+  bottom: 20px;
+  z-index: 1;
+  width: 100%;
+  height: 15px;
+  text-align: center;
 }
-
 [slider="pager"] > .slider-pager-page {
-    display: inline-block;
-    margin: 0px 3px;
-    width: 15px;
-    height: 15px;
-    text-decoration: none;
-    opacity: 0.3;
+  display: inline-block;
+  margin: 0px 3px;
+  width: 15px;
+  height: 15px;
+  text-decoration: none;
+  opacity: 0.3;
 }
-
 [slider="pager"] > .slider-pager-page.active {
-    -webkit-transition: opacity 0.4s ease-in;
-    transition: opacity 0.4s ease-in;
-    opacity: 1;
+  -webkit-transition: opacity 0.4s ease-in;
+  transition: opacity 0.4s ease-in;
+  opacity: 1;
 }
-
 [slider="pager"] > .slider-pager-page > i {
-    display: inline-block;
-    width: 80%;
-    height: 80%;
-    border-radius: 50%;
-    background-color: #000;
-}
-
-#list {
-    width: 170px;
-    margin: 30px auto;
-    font-size: 1rem;
-}
-
-#list ol {
-    margin-top: 30px;
-}
-
-#list ol li {
-    text-align: left;
-    list-style: decimal;
-    margin: 10px 0px;
+  display: inline-block;
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  background-color: #91a7d0;
 }
